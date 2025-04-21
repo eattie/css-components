@@ -1,0 +1,150 @@
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+/* 4. Add accessible line-height and 5. improve text rendering */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Poppins", sans-serif;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* 10. Create a root stacking context */
+#root, #__next {
+  isolation: isolate;
+}
+
+/* ————————————————————————————
+   Rainbow Button Styles
+   ———————————————————————————— */
+
+/* rainbow color stops & speed */
+:root {
+  --color-1: 0 100% 63%;
+  --color-2: 270 100% 63%;
+  --color-3: 210 100% 63%;
+  --color-4: 195 100% 63%;
+  --color-5: 90 100% 63%;
+  --rainbow-speed: 2s;
+}
+
+/* Animate the rainbow shift */
+@keyframes rainbow {
+  0%   { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+
+.rainbow-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;           /* approx h-11 */
+  padding: 0.5rem 2rem;      /* py-2 px-8 */
+  border-radius: 0.75rem;    /* rounded-xl */
+  border: 0.08rem solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;              /* adjust as needed */
+  background-clip: padding-box, border-box, border-box;
+  background-origin: border-box;
+  background-size: 200%;
+  transition: opacity 0.2s;
+
+  /* Light‑mode layers:
+     1) solid base
+     2) subtle fade overlay
+     3) moving rainbow */
+  background-image:
+    linear-gradient(#121213, #121213),
+    linear-gradient(#121213 50%, rgba(18,18,19,0.6) 80%, rgba(18,18,19,0) 100%),
+    linear-gradient(
+      90deg,
+      hsl(var(--color-1)),
+      hsl(var(--color-5)),
+      hsl(var(--color-3)),
+      hsl(var(--color-4)),
+      hsl(var(--color-2))
+    );
+}
+
+/* Dark‑mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .rainbow-button {
+    background-image:
+      linear-gradient(#fff, #fff),
+      linear-gradient(#fff 50%, rgba(255,255,255,0.6) 80%, rgba(0,0,0,0) 100%),
+      linear-gradient(
+        90deg,
+        hsl(var(--color-1)),
+        hsl(var(--color-5)),
+        hsl(var(--color-3)),
+        hsl(var(--color-4)),
+        hsl(var(--color-2))
+      );
+  }
+}
+
+.rainbow-button::before {
+  content: "";
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 20%;
+  background-image: linear-gradient(
+    90deg,
+    hsl(var(--color-1)),
+    hsl(var(--color-5)),
+    hsl(var(--color-3)),
+    hsl(var(--color-4)),
+    hsl(var(--color-2))
+  );
+  background-size: 200%;
+  animation: rainbow var(--rainbow-speed) infinite linear;
+  filter: blur(0.8rem);
+  pointer-events: none;
+}
+
+.rainbow-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
